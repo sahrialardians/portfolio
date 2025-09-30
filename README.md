@@ -1,7 +1,7 @@
 # Portfolio Website
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-blue)](https://portfolio-sahrial.vercel.app)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-blue)](https://sahrial.vercel.app)
 
 A mobile-first responsive website built with **Next.js**, **TypeScript**, **Tailwind CSS**, and **shadcn/ui**.  
 Deployed seamlessly on **Vercel**.
