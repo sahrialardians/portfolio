@@ -11,6 +11,8 @@ export type Project = {
     excerpt: string,
     slug: string,
     tags: string[],
+    repository_url: string,
+    project_url: string,
     image_url: string,
     body: ReactNode,
     results: ProjectResult[],
