@@ -6,64 +6,70 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Card, CardContent } from "@/components/ui/card"
 import { NewsletterForm } from "@/components/NewsletterForm"
-import { articles } from "@/data/article"
-
-function getArticle(slug: string) {
-    return articles.find((a) => a.slug === slug)
-}
+import { getArticleBySlug } from "@/lib/articles"
 
 export default async function ArticlePage({ params }: { params: { slug: string } }) {
     const { slug } = await params
-    const article = getArticle(slug)
+    const article = await getArticleBySlug(slug)
 
     if (!article) return notFound()
 
     return (
         <main className="bg-white rounded-t-xl p-6">
-            {/* Back link */}
-            <Link
-                href="/"
-                className="text-sm text-muted-foreground hover:underline">
-                ← Back to home
-            </Link>
+            <div>
+                {/* Back link */}
+                <div>
+                    <Link
+                        href="/"
+                        className="text-sm text-muted-foreground hover:underline">
+                        ← Back to home
+                    </Link>
+                </div>
 
-            {/* Title & Subtitle */}
-            <h1 className="mt-4 text-balance text-xl font-semibold md:text-2xl">
-                {article.title}
-            </h1>
-            {article.excerpt && (
-                <p className="text-muted-foreground">{article.excerpt}</p>
-            )}
+                {/* Title & Subtitle */}
+                <h1 className="mt-4 text-balance text-xl font-semibold md:text-2xl">
+                    {article.title}
+                </h1>
+                {article.excerpt && (
+                    <p className="text-muted-foreground">{article.excerpt}</p>
+                )}
+            </div>
 
             {/* Meta info */}
-            <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                <time dateTime={article.published_at}>{article.published_at}</time>
-                <span aria-hidden="true">•</span>
-                <span>{article.reading_time}</span>
-                <span aria-hidden="true">•</span>
-                <div className="flex flex-wrap gap-1">
-                {article.tags.map((t) => (
-                    <Badge key={t} variant="secondary">
-                    {t}
-                    </Badge>
-                ))}
+            {article.tags?.length > 0 && (
+                <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                    <time dateTime={article.published_at}>{article.published_at}</time>
+                    <span aria-hidden="true">•</span>
+                    <span>{article.reading_time}</span>
+                    <span aria-hidden="true">•</span>
+                    <div className="flex flex-wrap gap-1">
+                    {article.tags.map((tag: string) => (
+                        <Badge key={tag} variant="secondary">
+                            {tag}
+                        </Badge>
+                    ))}
+                    </div>
                 </div>
-            </div>
+            )}
 
             <Separator className="my-6" />
 
             {/* Body */}
             <article className="prose prose-neutral max-w-none dark:prose-invert">
                 <div className="mb-6">
-                    <Image
-                        src={article.image_url}
-                        alt="Illustration"
-                        width={800}
-                        height={360}
-                        className="w-full rounded-md border"
-                    />
+                    {article.image_url && (
+                        <Image
+                            src={article.image_url}
+                            alt="Illustration"
+                            width={800}
+                            height={360}
+                            className="w-full rounded-md border"
+                        />
+                    )}
                 </div>
-                {article.body}
+
+                {/* @ts-ignore */}
+                <div dangerouslySetInnerHTML={{ __html: article.body }}/>
             </article>
 
             {/* Newsletter CTA */}
