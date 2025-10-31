@@ -4,15 +4,11 @@ import Image from "next/image"
 
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { projects } from "@/data/project"
-
-function getProject(slug: string) {
-    return projects.find((p) => p.slug === slug)
-}
+import { getProjectBySlug } from "@/lib/projects"
 
 export default async function ProjectPage({ params }: { params: { slug: string } }) {
     const { slug } = await params 
-    const project = getProject(slug)
+    const project = await getProjectBySlug(slug)
 
     if (!project) return notFound()
 
@@ -35,40 +31,65 @@ export default async function ProjectPage({ params }: { params: { slug: string }
             )}
 
             {/* Meta info */}
-            <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                <div className="flex flex-wrap gap-1">
-                    {project.tags.map((tag) => (
-                        <Badge key={tag} variant="secondary">
-                        {tag}
-                        </Badge>
-                    ))}
+                <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                    <Link
+                        href={project.repository_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-muted-foreground hover:underline">
+                        Source
+                    </Link>
+                    <Link
+                        href={project.project_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-muted-foreground hover:underline">
+                        Visit
+                    </Link>
+
+                    {/* Tags : Check is exist */}
+                    {project.tags?.length > 0 && (
+                        <div className="flex flex-wrap gap-1">
+                            {project.tags.map((tag: string) => (
+                                <Badge key={tag} variant="secondary">
+                                    {tag}
+                                </Badge>
+                            ))}
+                        </div>
+                    )}
                 </div>
-            </div>
 
             <Separator className="my-6" />
 
             <div>
-                <Image
-                    src={project.image_url}
-                    alt="Illustration"
-                    width={800}
-                    height={360}
-                    className="mb-4 w-full rounded-md border"
-                />
+                {/* Image: render image when available */}
+                {project.image_url && (
+                    <Image
+                        src={project.image_url}
+                        alt={project.title ?? "Illustration"}
+                        width={800}
+                        height={360}
+                        className="mb-4 w-full rounded-md border"
+                    />
+                )}
 
-                {project.body}
+                {/* @ts-ignore */}
+                <div dangerouslySetInnerHTML={{ __html: project.body }}/>
 
-                <div className="mt-4">
-                    <h2 className="text-lg md:text-xl  font-semibold">Results</h2>
-                    <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-3">
-                        {project.results.map((result) => (
-                            <div key={result.label} className="rounded-md bg-secondary p-4">
-                                <p className="text-xs text-muted-foreground">{result.label}</p>
-                                <p className="text-lg font-semibold">{result.value}</p>
-                            </div>
-                        ))}
+                {/* Results: Check is exists */}
+                {project.results?.length > 0 && (
+                    <div className="mt-4">
+                        <h2 className="text-lg md:text-xl font-semibold">Results</h2>
+                        <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                            {project.results.map((result: any) => (
+                                <div key={result.label} className="rounded-md bg-secondary p-4">
+                                    <p className="text-xs text-muted-foreground">{result.metric}</p>
+                                    <p className="text-lg font-semibold">{result.value}</p>
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
         </main>
     )
