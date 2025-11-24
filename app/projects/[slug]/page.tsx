@@ -63,18 +63,20 @@ export default async function ProjectPage({ params }: { params: { slug: string }
 
             <div>
                 {/* Image: render image when available */}
-                {project.image_url && (
+                {project.thumbnail_url && (
                     <Image
-                        src={project.image_url}
+                        src={project.thumbnail_url}
                         alt={project.title ?? "Illustration"}
                         width={800}
                         height={360}
                         className="mb-4 w-full rounded-md border"
                     />
                 )}
-
+                
                 {/* @ts-ignore */}
-                <div dangerouslySetInnerHTML={{ __html: project.body }}/>
+                <div className="prose prose-zinc max-w-none">
+                    <div dangerouslySetInnerHTML={{ __html: project.body }} />
+                </div>
 
                 {/* Results: Check is exists */}
                 {project.results?.length > 0 && (
