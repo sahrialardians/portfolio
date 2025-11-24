@@ -9,7 +9,7 @@ export async function Hero() {
         <section id="hero" className="px-6 md:px-0">
             <p className="text-md text-muted-foreground">Hi, I'm</p>
             <h1 className="text-pretty text-xl font-semibold">
-                { profile.fullname }
+                { profile.name }
             </h1>
             <p className="text-muted-foreground mt-4">
                 { profile.bio }
