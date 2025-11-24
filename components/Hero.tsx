@@ -11,10 +11,10 @@ export async function Hero() {
             <h1 className="text-pretty text-xl font-semibold">
                 { profile.name }
             </h1>
-            <p className="text-muted-foreground mt-4">
+            <p className="mt-4">
                 { profile.bio }
             </p>
-            <p className="text-muted-foreground mt-2">
+            <p className="mt-2">
                 <span>Find me on </span>
                 {socialLinks.map((social, idx) => (
                     <span key={social.sort_order}>
