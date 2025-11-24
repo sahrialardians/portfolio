@@ -1,5 +1,3 @@
-import { ReactNode } from "react"
-
 export type ProjectResult = {
     label: string,
     value: string
@@ -14,7 +12,7 @@ export type Project = {
     repository_url: string,
     project_url: string,
     thumbnail_url: string,
-    body: ReactNode,
+    body: string,
     results: ProjectResult[],
     created_at: string,
     published_at: string
