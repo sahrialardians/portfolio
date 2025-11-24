@@ -5,7 +5,7 @@ export type SocialLinks = {
 }
 
 export type Profile = {
-    fullname: string,
+    name: string,
     email: string,
     bio: string,
     avatar_url: string,
