@@ -13,7 +13,7 @@ export type Project = {
     tags: string[],
     repository_url: string,
     project_url: string,
-    image_url: string,
+    thumbnail_url: string,
     body: ReactNode,
     results: ProjectResult[],
     created_at: string,
